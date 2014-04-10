@@ -18,6 +18,7 @@ require("mailer.php");
 <h1>PHP Mailer</h1>
 <p>
 <pre>
+PS : it is for educational purpose only,don't use it for spam
 <?php echo $errorMessage;?>
 
 <?php echo $succMessage;?>
