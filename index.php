@@ -6,7 +6,7 @@ require("mailer.php");
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>simple PHP Mailer</title>
+<title>.:: Simple PHP Mailer ::.</title>
 <link rel="stylesheet" href="css/style.css" />
 <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
 
@@ -54,5 +54,5 @@ echo $succMessage;
 </form>
 </article>
 <footer>
-<p>Free as in freedom, follow @asker_amine</p>
+<p>Free as in freedom, follow <a href="https://twitter.com/asker_amine" alt="Twitter">@asker_amine</a></p>
 </footer>
