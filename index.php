@@ -17,11 +17,10 @@ require("mailer.php");
 <article>
 <h1>PHP Mailer</h1>
 <p>
-<pre><?php
-echo $errorMessage;
+<pre>
+<?php echo $errorMessage;?>
 
-echo $succMessage;
-?>
+<?php echo $succMessage;?>
 </pre></p>
 <form method="post" >
 	<ul>
@@ -54,5 +53,5 @@ echo $succMessage;
 </form>
 </article>
 <footer>
-<p>Free as in freedom, follow <a href="https://twitter.com/asker_amine" alt="Twitter">@asker_amine</a></p>
+<p>Free as in freedom, follow me <a href="https://twitter.com/asker_amine" alt="Twitter">@asker_amine</a></p>
 </footer>
