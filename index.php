@@ -1,58 +1,81 @@
 <?php
-require("mailer.php");
+/*********************************************************************************************
+*
+* A simple Mailer module.
+* This script isn't complete.
+*
+* For better use, you can add other validate & filter clauses
+* Either your improve your website ergonomy yourself, just the regular way, or you can
+* just integrate this script
+*
+* file : index.php
+* @author Med Amine Ben Asker [YuriLz]- mail : ben[dot]asker[dot]amine[at]gmail[dot]com
+*
+**********************************************************************************************/
+ function email_valid($email)
+{
+	if (strlen($email) > 50)
+		return false;
+
+	return preg_match('/^(([^<>()[\]\\.,;:\s@"\']+(\.[^<>()[\]\\.,;:\s@"\']+)*)|("[^"\']+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\d\-]+\.)+[a-zA-Z]{2,}))$/', $email);
+}
+
+function send_email($to, $arg, &$messages){
+
+ $status = mail($to, $arg['subject'], $arg['message'], $arg['header']);
+ $messages[] = ($status) ? "[ S ] Message sent successfully to " . $to . "\n"
+                         : "[ E ] Message could not be sent to " . $to . "\n";
+}
+
+function validate_adresses($adresses){
+
+$result = preg_replace('/\r\n/', '', $adresses);
+$result = preg_replace('/\s+/', ' ', $result);
+
+$result =  explode(' ', $result);
+ foreach ($result as $key => $value) {
+   if (! email_valid($value))
+    unset($key); 
+ }
+ return $result;
+}
+
+
+$adresses = ( isset($_POST['to'] ) )? $_POST['to'] : NULL ; 
+$from     = ( isset($_POST['from'] ) )? $_POST['from'] : NULL ; 
+$message  = ( isset($_POST['message'] ) )? $_POST['message'] : NULL ; 
+$subject  = ( isset($_POST['subject'] ) )? $_POST['subject'] : NULL ; 
+
+
+
+$adresses = validate_adresses($adresses);
+if ( ! empty( $adresses ) )
+{
+  $logmsgs = array();
+  $content = array('subject' => $_POST['subject'],
+                   'message' => $_POST['message'],
+                   'header' => "From:".$_POST['from']." \r\n",
+                   );
+
+foreach($adresses as $key => $to)
+  send_email($to, $content, $logmsgs);
+
+		
+ // Save traffic in a JSON file  
+$contentToJSON = array("to" =>  implode(";",$adresses),
+                   "subject" => $subject,
+                      "from" => $from,
+                   "message" => $message,
+                       "log" => implode(";", $logmsgs)
+                       );
+				
+$tojson = json_encode($contentToJSON);
+file_put_contents("logs/js"
+                          .md5($contentToJSON['message'])
+                          ."_"
+                          .time()
+                          .".json",
+                  $tojson);
+
+} 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>.:: Simple PHP Mailer ::.</title>
-<link rel="stylesheet" href="css/style.css" />
-<link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
-
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-
-</head>
-<body>
-<article>
-<h1>PHP Mailer</h1>
-<p>
-<pre>
-PS : it is for educational purpose only,don't use it for spam
-<?php echo $errorMessage;?>
-
-<?php echo $succMessage;?>
-</pre></p>
-<form method="post" >
-	<ul>
-        <li>
-        	<label for="to">To:</label>
-              <textarea cols="50" rows="2" name="to"></textarea>
-			  </li>
-        <li>
-        	<label for="from">From:</label>
-            <input type="email" size="40" name="from" />
-        </li>
-        <li>
-        	<label for="subject">Subject:</label>
-            <input type="text" size="40" name="subject" />
-        </li>
-        
-		<li>
-            <label><input type="radio" name="html" /> with html</label>
-            <label><input type="radio" name="html" /> no html</label>
-        </li>
-        <li>
-        	<label for="message">Message:</label>
-            <textarea cols="80" rows="7" name="message"></textarea>
-		</li>
-	</ul>
-    <p>
-        <button type="submit" class="action">Send</button>
-        <button type="reset" class="right">Reset</button>
-    </p>
-</form>
-</article>
-<footer>
-<p>Free as in freedom, follow me <a href="https://twitter.com/asker_amine" alt="Twitter">@asker_amine</a></p>
-</footer>
