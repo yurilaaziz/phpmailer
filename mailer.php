@@ -8,7 +8,7 @@
 * Either your improve your website ergonomy yourself, just the regular way, or you can
 * just integrate this script
 *
-* file : display.php
+* file : mailer.php
 * @author Med Amine Ben Asker [YuriLz]- mail : ben[dot]asker[dot]amine[at]gmail[dot]com
 *
 **********************************************************************************************/
