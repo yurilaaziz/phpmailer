@@ -22,8 +22,7 @@
 
 function send_email($to, $arg, &$messages){
 
- //$status = mail($to, $arg['subject'], $arg['message'], $arg['header']);
- $status = rand(1,9)%2;
+ $status = mail($to, $arg['subject'], $arg['message'], $arg['header']);
  $messages[] = ($status) ? "[ S ] Message sent successfully to " . $to . "\n"
                          : "[ E ] Message could not be sent to " . $to . "\n";
 }
